@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "408814809785",
+    "project_id": "iesb-android-ii",
+    "storage_bucket": "iesb-android-ii.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408814809785:android:9dfc418c452ab9f185a168",
+        "android_client_info": {
+          "package_name": "com.claudio.androidii"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxghIQBUBn50GWdDnT38NZCn5MNLauMUU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

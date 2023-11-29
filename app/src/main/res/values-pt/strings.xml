@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroidII</string>
+    <string name="title">Titulo</string>
+    <string name="subtitle">Subtitulo</string>
+    <string name="name">Nome</string>
+    <string name="age">Idade</string>
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidII</string>
+    <string name="title">Title</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="name">Name</string>
+    <string name="age">Age</string>
+</resources>
