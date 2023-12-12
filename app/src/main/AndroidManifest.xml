@@ -13,6 +13,9 @@
         android:theme="@style/Theme.AndroidII"
         tools:targetApi="31"
         android:name=".MyApplication">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="my_channel" />
         <activity
             android:name=".aulai.NewContactActivity"
             android:exported="true">
@@ -33,6 +36,16 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
         </activity>
+
+        <service
+            android:name=".aulaii.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

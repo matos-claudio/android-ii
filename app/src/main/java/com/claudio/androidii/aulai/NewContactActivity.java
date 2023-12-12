@@ -7,17 +7,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.claudio.androidii.R;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,10 +39,14 @@ public class NewContactActivity extends AppCompatActivity {
 
     private final String DATABASE_REFERENCE = "contact";
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_contact);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         etName = findViewById(R.id.etName);
         etEmail = findViewById(R.id.etEmail);
@@ -53,6 +60,18 @@ public class NewContactActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(contactAdapter);
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        String currentToken = task.getResult();
+                        Log.d("TOKEN", "Current token: " + currentToken);
+
+                        // ...
+                    } else {
+                        Log.w("TOKEN", "Fetching FCM registration token failed", task.getException());
+                    }
+                });
 
         databaseReference = FirebaseDatabase.getInstance().getReference(DATABASE_REFERENCE);
 
@@ -82,6 +101,7 @@ public class NewContactActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(name) &&
                         !TextUtils.isEmpty(email) &&
                         !TextUtils.isEmpty(phone)) {
+                    trackEvent();
                     String contactId = databaseReference.push().getKey();
                     Contact contact = new Contact();
                     contact.setName(name);
@@ -91,5 +111,11 @@ public class NewContactActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void trackEvent() {
+        Bundle params = new Bundle();
+        params.putString("button_click", "true");
+        mFirebaseAnalytics.logEvent("button_click", params);
     }
 }
