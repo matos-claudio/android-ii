@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,10 +18,16 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
 
     private List<Contact> contacts;
     private Context context;
+    private OnDeleteClickListener onDeleteClickListener;
+    private OnUpdateClickListener onUpdateClickListener;
 
-    public ContactAdapter(Context context, List<Contact> contacts) {
+    public ContactAdapter(Context context, List<Contact> contacts,
+                          OnDeleteClickListener onDeleteClickListener,
+                          OnUpdateClickListener onUpdateClickListener) {
         this.context = context;
         this.contacts = contacts;
+        this.onDeleteClickListener = onDeleteClickListener;
+        this.onUpdateClickListener = onUpdateClickListener;
     }
 
     @NonNull
@@ -37,6 +44,24 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
         holder.txName.setText(contact.getName());
         holder.txEmail.setText(contact.getEmail());
         holder.txPhone.setText(contact.getPhone());
+
+        holder.btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onUpdateClickListener != null) {
+                    onUpdateClickListener.onUpdateClick(holder.getAdapterPosition());
+                }
+            }
+        });
+
+        holder.btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(onDeleteClickListener != null) {
+                    onDeleteClickListener.onDeleteClick(holder.getAdapterPosition());
+                }
+            }
+        });
     }
 
     @Override
@@ -47,11 +72,22 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         // Mapeamento dos componentes do nosso contact_item.xml
         TextView txName, txEmail, txPhone;
+        Button btDelete, btEdit;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txName = itemView.findViewById(R.id.txName);
             txEmail = itemView.findViewById(R.id.txEmail);
             txPhone = itemView.findViewById(R.id.txPhone);
+            btDelete = itemView.findViewById(R.id.btDelete);
+            btEdit = itemView.findViewById(R.id.btEdit);
         }
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int position);
+    }
+
+    public interface OnUpdateClickListener {
+        void onUpdateClick(int position);
     }
 }
