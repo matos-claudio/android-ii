@@ -8,13 +8,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.claudio.androidii.FirebaseAuthSingleton;
 import com.claudio.androidii.R;
+import com.claudio.androidii.aulaiii.LoginActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,10 +47,14 @@ public class NewContactActivity extends AppCompatActivity implements ContactAdap
 
     private final String DATABASE_REFERENCE = "contact";
 
+    private FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_contact);
+
+        firebaseAuth = FirebaseAuthSingleton.getInstance();
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             String token = task.getResult();
@@ -139,5 +149,35 @@ public class NewContactActivity extends AppCompatActivity implements ContactAdap
         intent.putExtra("CONTACT_EMAIL", contactEmail);
         intent.putExtra("CONTACT_PHONE", contactPhone);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Mostra na tela -> inflar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Capturar acao do usuario
+        switch (item.getItemId()) {
+            case R.id.exit:
+                    logout();
+                return true;
+
+            case R.id.add:
+//                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void logout() {
+        firebaseAuth.signOut();
+        startActivity(new Intent(NewContactActivity.this, LoginActivity.class));
+        finish();
     }
 }

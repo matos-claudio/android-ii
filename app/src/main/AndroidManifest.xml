@@ -13,11 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidII"
         tools:targetApi="31">
+        <activity
+            android:name=".aulaiii.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".aulaiii.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="my_channel" />
-
 
         <service
             android:name=".aulai.MyFirebaseMessagingService"
@@ -32,13 +43,7 @@
             android:exported="false" />
         <activity
             android:name=".aulai.NewContactActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".aulai.MainActivity"
             android:exported="true">
